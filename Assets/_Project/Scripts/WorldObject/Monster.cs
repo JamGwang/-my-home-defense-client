@@ -34,6 +34,8 @@ public class Monster : WorldBase<MonsterDataSO>
 
     private bool isStop = false;
 
+    public bool isDead = false;
+
     public override void Init(BaseDataSO data)
     {
         this.data = (MonsterDataSO)data;
@@ -91,6 +93,7 @@ public class Monster : WorldBase<MonsterDataSO>
         hpGauge.SetProgress(nowHp);
         if (nowHp <= 0 && player == ePlayer.me)
         {
+            isDead = true;
             GamePacket packet = new GamePacket();
             packet.MonsterDeathNotification = new C2SMonsterDeathNotification() { MonsterId = monsterId };
             SocketManager.instance.Send(packet);

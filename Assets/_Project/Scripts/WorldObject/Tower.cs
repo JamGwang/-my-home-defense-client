@@ -33,7 +33,8 @@ public class Tower : WorldBase<TowerDataSO>
         if (isAttackDelay || player == ePlayer.another || isStop) return;
         if (collision.gameObject.TryGetComponent(out Monster monster))
         {
-            OnAttackMonster(monster);
+            if (!monster.isDead)
+                OnAttackMonster(monster);
         }
     }
 

@@ -107,10 +107,10 @@ public class GameManager : MonoSingleton<GameManager>
     {
         isGameStart = true;
         Time.timeScale = 1;
-        _homeHp1 = 100;
-        _homeHp2 = 100;
+        _homeHp1 = initialGameState.BaseHp;
+        _homeHp2 = initialGameState.BaseHp;
         UIManager.Get<UIGame>().InitHpGauge(homeHp1);
-        gold = 5000;
+        gold = initialGameState.InitialGold;
         topScore = 0;
         score = 0;
         level = 1;
@@ -128,7 +128,7 @@ public class GameManager : MonoSingleton<GameManager>
         int count = 0;
         do
         {
-            rand = Util.Random(4, 20);
+            rand = Util.Random(4, 50);
             count++;
             if (count > 15) break;
         } while (usesTowerPositions.Contains(rand));
@@ -216,9 +216,17 @@ public class GameManager : MonoSingleton<GameManager>
     public Vector3 CalcRandomTowerPosition()
     {
         var rand = GetRandomTowerPositionIndex();
-        var position = roads1[rand].transform.localPosition + new Vector3(0, Util.Random(-1.5f, 1.5f));
+        var position = roads1[rand].transform.localPosition + CalcRandomTowerPositionY();
         //usesTowerPositions.Add(rand);
         return position;
+    }
+
+    public Vector3 CalcRandomTowerPositionY()
+    {
+        var position = new Vector3(0, Util.Random(35f, 41f));
+        var position2 = new Vector3(0, Util.Random(-35f, -41f));
+        var random = Util.Random(0, 2);
+        return random >= 1 ? position : position2;
     }
 
     public void AddTower(TowerData data, ePlayer player)
@@ -320,7 +328,7 @@ public class GameManager : MonoSingleton<GameManager>
             GamePacket packet = new GamePacket();
             packet.SpawnMonsterRequest = new C2SSpawnMonsterRequest();
             SocketManager.instance.Send(packet);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(initialGameState.MonsterSpawnInterval);
         }
     }
 

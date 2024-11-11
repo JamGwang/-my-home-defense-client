@@ -28,9 +28,9 @@ public class UIMain : UIBase
     IEnumerator Init()
     {
         DataManager.instance.Init();
-        desc.text = "µ¥ÀÌÅÍ ·ÎµùÁß";
+        desc.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½";
         yield return new WaitUntil(() => DataManager.instance.isInit);
-        desc.text = "ÅÍÄ¡ÇØÁÖ¼¼¿ä.";
+        desc.text = "í„°ì¹˜í•´ì£¼ì„¸ìš”.";
         UnityAction callback = () =>
         {
             button.interactable = true;
